@@ -1,5 +1,12 @@
 /*
- 추가사항 : 방 추가 기능 삭제
+ VER1
+ 추가사항 : 
+ 방 추가 기능 삭제
+ 방 버튼 추가
+ 
+ VER2
+ 추가사항 : 
+ 예약시 나오는 버튼 기능 추가
  */
 
 package boss_Activity;
@@ -43,6 +50,11 @@ public class Main_Activity {
 		frame.setBounds(100, 100, 800, 750); 					// 가로 위치, 세로 위치, 가로 길이, 세로 길이
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		/* 이름 저장공간 */
+		JTextField name1 = new JTextField(15);
+		
+		/* 전화번호 저장공간 */
+		JTextField phone1 = new JTextField(15);
 		
 		/* 윗 부분 패널 */
 		JPanel top_panel = new JPanel();
@@ -64,24 +76,27 @@ public class Main_Activity {
 		inputname.setBackground(new Color(51, 255, 255));
 		inputname.setBounds(0, 0, 784, 10);
 		inputname.add(new JLabel("이름 : "));
-		inputname.add(new JTextField(15));
+		inputname.add(name1);
+		//num1.setName(name1.getText());
 		
-		/* 이름 입력 */
+		/* 핸드폰 번호 입력 */
 		JPanel phonenum = new JPanel();
 		phonenum.setBackground(new Color(51, 255, 255));
 		phonenum.setBounds(0, 0, 784, 10);
 		phonenum.add(new JLabel("핸드폰 번호 : "));
-		phonenum.add(new JTextField(15));
+		phonenum.add(phone1);
 		
-		/* 현재 시각 입력 */
+		/* 현재 시각 입력 -> 이거 다시 해야할 듯 */
 		JPanel inputtime = new JPanel();
 		inputtime.setBackground(new Color(51, 255, 255));
 		inputtime.setBounds(0, 0, 784, 10);
-		inputtime.add(new JLabel("시간 : "));
+		JLabel timeInsert = new JLabel("시간 : ");
+		inputtime.add(timeInsert);
 		SimpleDateFormat timeformat = new SimpleDateFormat ( "yyyy-MM-dd HH:mm");
 		Date time = new Date();
 		String time1 = timeformat.format(time);
-		inputtime.add(new JLabel(time1));
+		JLabel temptime = new JLabel(time1);		// 임시 시간
+		inputtime.add(temptime);
 		
 		/* 예약 / 시작 선택 */
 		JPanel status = new JPanel();
@@ -104,20 +119,72 @@ public class Main_Activity {
 		bottom_panel.add(status);
 		bottom_panel.setVisible(false);							// 버튼 클릭 전까지 볼 수 없음
 		
-		JLabel intro = new JLabel("보드 게임 예약 현황");
+		/* 예약 관리 화면 */
+		JPanel manage_res = new JPanel();
+		JButton res_cancel = new JButton("예약 취소");
+		JButton res_to_start = new JButton("사용 시작");
+		manage_res.add(res_cancel);								// 예약 취소 버튼 추가
+		manage_res.add(res_to_start);							// 사용 시작 버튼 추가
+		res_cancel.setBounds(50, 50, 784, 10);
+		res_to_start.setBounds(50, 80, 784, 10);
+		manage_res.setBackground(new Color(51, 255, 255));
+		manage_res.setBounds(0, 500, 784, 200);
+		frame.getContentPane().add(manage_res);
+		//manage_res.setLayout(new BoxLayout(manage_res, BoxLayout.Y_AXIS));	// BoxLayout으로 설정
+		manage_res.setVisible(false);							// 버튼 클릭 전까지 볼 수 없음
 		
-		/* 방 1 버튼 클릭 시 */
+		JLabel intro = new JLabel("보드 게임 예약 현황");
+	
 		JButton room1 = new JButton("방 1");
+		JButton room1res = new JButton("");
+		room1res.setVisible(false);
+		
+		/* room1버튼 클릭 시 */
 		room1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				bottom_panel.setVisible(true);
+				manage_res.setVisible(false);
+			}
+		});
+		
+		/* room1res버튼 클릭 시 */
+		room1res.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				bottom_panel.setVisible(false);
+				manage_res.setVisible(true);
 			}
 		});
 		
 		/* 에약 버튼 클릭 시 */
 		resbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				room1.setVisible(false);				// room1 투명화
+				room1res.setVisible(true);				// room1res 가시화
+				num1.setName(name1.getText());
+				num1.setPhone(phone1.getText());
+				Date timeupdate = new Date();
+				String time1 = timeformat.format(timeupdate);
+				JLabel temptime = new JLabel(time1);
+				inputtime.removeAll();
+				JLabel timeInsert = new JLabel("시간 : ");
+				inputtime.add(timeInsert);
+				inputtime.add(temptime);		// 시간 업데이트 -> 문제점 : 계속 시간이 늘어남 -> 수정 완료
+				num1.setTime(time1);
 				
+				/*줄바꿈을 이용하기 위해 HTML 사용*/
+				room1res.setText(String.format("<HTML>예약 시간 : %s <br>이름 : %s<br>전화번호 : %s</HTML>",num1.getTime(), num1.getName(), num1.getPhone()));
+				bottom_panel.setVisible(false);			// bottom_panel 투명화, 예약 관리 가시화(추가 예정)
+				
+			}
+		});
+		
+		/* 예약 취소 버튼 클릭 시 */
+		res_cancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e ) {
+				bottom_panel.setVisible(true);
+				manage_res.setVisible(false);
+				room1.setVisible(true);
+				room1res.setVisible(false);
 			}
 		});
 		
@@ -130,17 +197,29 @@ public class Main_Activity {
 		
 		intro.setFont(new Font("Dialog", Font.PLAIN, 20));
 		intro.setBounds(300, 0, 200, 100);						// 인트로 바운드 설정
-		room1.setBounds(100, 74, 200, 100);						// 버튼 바운드 설정
+		/* 버튼 바운드 설정 */
+		room1.setBounds(100, 74, 200, 100);						
+		room1res.setBounds(100, 74, 200, 100);
 		top_panel.add(intro);
-		panel.add(room1);										// room1 추가
-		
+		/* room1 ~ 4, room1 ~ 4res 추가 (room2 ~ 4, room2 ~ 4res 추가 예정)	 */
+		panel.add(room1);											
+		panel.add(room1res);									
 	}
 	
 	
 	
 }
 
+/*
+ 필요 사항
+ manage_res 화면 상세 설정
+ (방을 추가할 수 있는 기능을 만들게 될 경우) -> Layout 변경
+ 누를 때마다 업데이트가 되어야 하는데 버튼 업데이트가 되지 않음.
+ */
+
+
 /* 더미 데이터 
+
 void start(Rooms room)
 	{
 		JOptionPane Jstart=new JOptionPane();

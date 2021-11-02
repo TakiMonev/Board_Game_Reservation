@@ -2,29 +2,30 @@ package rooms;
 
 public class Rooms {
 	private String name;
-	private int phone;
-	private int time;
+	private String phone;
+	private String time;
 	private int res;
 	private int cancel;
 	private int accept;
 	private int price;
-	
+	public int is_res = 0;
+
 	public String getName() {				// 유저 이름 입력 받기
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getPhone() {					// 예약 시간 입력 받기
+	public String getPhone() {					// 예약 시간 입력 받기
 		return phone;
 	}
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public int getTime() {					// 예약 시간 입력 받기
+	public String getTime() {					// 예약 시간 입력 받기
 		return time;
 	}
-	public void setTime(int time) {
+	public void setTime(String time) {
 		this.time = time;
 	}
 	
