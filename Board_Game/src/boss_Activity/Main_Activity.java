@@ -18,13 +18,15 @@ import javax.accessibility.AccessibleContext;
 import rooms.Rooms;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+//import caidan.yaotianshui;
 
 public class Main_Activity extends JFrame {
 	public JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
 	JPanel[] panels = new JPanel [4];
 	JPanel[] res = new JPanel [4];
-	
+	JPanel[] foodPanels = new JPanel [4];
+
 	//JPanel bottom = new JPanel();
 	//Container contentPane = frame.getContentPane();
 	
@@ -65,15 +67,26 @@ public class Main_Activity extends JFrame {
 			panels[i] = new JPanel();
 			res[i] = new JPanel();
 		}
+		
+		for (int i = 0; i < 4; i++)
+		{
+			foodPanels[i] = new JPanel();
+			foodPanels[i].setBounds(0, 500, 784, 200);
+			foodPanels[i].setBackground(new Color(255, 255, 0));
+			foodPanels[i].setLayout(null);
+			frame.add(foodPanels[i]); 				// foodPanels
+			foodPanels[i].setVisible(false);
+		}
+		
 		initialize(num1);
 		initialize(num2);
+			
 		mr.setButton(this, num1, 100, 74, 0);
 		mr.setButton(this, num2, 480, 74, 1);
 		mr.setButton(this, num3, 100, 255, 2);
 		mr.setButton(this, num4, 480, 255, 3);
 	}
-	
-	
+
 	public void initialize(Rooms num1) {
 		
 		//frame = new JFrame();
@@ -89,14 +102,12 @@ public class Main_Activity extends JFrame {
 		top_panel.setLayout(null);
 		
 		/* 중간 부분 패널 */
-		//JPanel panel = new JPanel();
-		//num1.setPanel(panel);
+		// 가운데 초기 패널
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(0, 100, 784, 400);
-		frame.getContentPane().add(panel);
+		// panel의 레이아웃 설정 안함
 		panel.setLayout(null);
-		
-		/* 아랫 부분 패널 */
+		frame.getContentPane().add(panel);		
 		
 		JLabel intro = new JLabel("보드 게임 예약 현황");
 		intro.setFont(new Font("Dialog", Font.PLAIN, 20));
