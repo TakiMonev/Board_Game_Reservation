@@ -273,7 +273,95 @@ public class Make_Room {
 				ma.panels[flag].setVisible(false);
 				ma.res[flag].setVisible(false);
 				ma.foodPanels[flag].setVisible(true);
+			}
+		});
+		
+		res_to_start.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < ma.foodPanels.length; i++)
+				{
+					if (flag != i)
+					{
+						ma.panels[i].setVisible(false);
+						ma.res[i].setVisible(false);
+						ma.foodPanels[i].setVisible(false);		// foodPanels invisible
+					}
+				}
 				
+				room.setVisible(false);				// room 투명화
+				roomres.setVisible(true);			
+				newRoom.setName(name1.getText());
+				newRoom.setPhone(phone1.getText());
+				Date timeupdate = new Date();
+				SimpleDateFormat timeformat = new SimpleDateFormat ( "yyyy-MM-dd HH:mm");
+				String time1 = timeformat.format(timeupdate);
+				JLabel temptime = new JLabel(time1);
+				newRoom.getInputTime().removeAll();			// 시간 초기화
+				JLabel timeInsert = new JLabel("시간 : ");
+				newRoom.getInputTime().add(timeInsert);
+				newRoom.getInputTime().add(temptime);		// 시간 업데이트 -> 문제점 : 계속 시간이 늘어남 -> 수정 완료
+				newRoom.setTime(time1);
+				
+				// 줄바꿈을 이용하기 위해 HTML 사용
+				roomres.setText(String.format("<HTML>예약 시간 : %s <br>이름 : %s<br>전화번호 : %s</HTML>",newRoom.getTime(), newRoom.getName(), newRoom.getPhone()));
+				
+				ma.panels[flag].setVisible(false);
+				ma.res[flag].setVisible(false);
+				ma.foodPanels[flag].setVisible(true);
+			}
+		});
+		
+		// 확인 버튼 클릭 시
+		ba.confirm.addActionListener(new ActionListener() {
+			private JLabel JLabel;
+
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(newRoom.getTime());
+				Date timeupdate_end = new Date();
+				SimpleDateFormat timeformat_end = new SimpleDateFormat ( "yyyy-MM-dd HH:mm");
+				String time_end = timeformat_end.format(timeupdate_end);
+				
+				int starttime = ((newRoom.getTime().charAt(10) * 10) + newRoom.getTime().charAt(11)) * 60 
+						+ newRoom.getTime().charAt(14) * 10 + newRoom.getTime().charAt(15);
+				int endtime = ((time_end.charAt(10) * 10) + time_end.charAt(11)) * 60 
+						+ time_end.charAt(14) * 10 + time_end.charAt(15);
+				
+				int finalPrice = (endtime - starttime) * 100;
+			
+				JFrame confirmfrm = new JFrame();
+				confirmfrm.setSize(400,300);
+				confirmfrm.setBackground(Color.white);
+				
+				JPanel confirmPanel = new JPanel();
+				confirmPanel.setSize(400, 300);
+				confirmPanel.setBackground(Color.white);
+				//confirmPanel.setLayout(null);
+				confirmPanel.setLayout(new BoxLayout(confirmPanel, BoxLayout.Y_AXIS));
+				
+				JPanel announce = new JPanel();
+				//announce.setLayout(null);
+				announce.setSize(400, 200);
+				JLabel finalPriceOutput = new JLabel("계산할 비용 : " + finalPrice);
+				finalPriceOutput.setBackground(Color.white);
+				finalPriceOutput.setFont(new Font("맑은 고딕", Font.PLAIN, 30));
+				announce.add(finalPriceOutput);
+				
+				JPanel bottomAnnounce = new JPanel();
+				bottomAnnounce.setSize(400, 100);
+				
+				// calFinish 버튼
+				JButton calFinish = new JButton();
+				calFinish.setBounds(300, 300, 200, 100);
+				calFinish.add(new JLabel("확인"));
+				bottomAnnounce.add(calFinish);
+				
+				confirmPanel.add(announce);
+				confirmPanel.add(bottomAnnounce);
+				//confirmPanel.add(calFinish);
+				
+				confirmfrm.add(confirmPanel);
+				confirmfrm.setVisible(true);
+				System.out.println(finalPrice);
 			}
 		});
 		
