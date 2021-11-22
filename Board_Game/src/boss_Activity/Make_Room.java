@@ -116,12 +116,16 @@ public class Make_Room {
 		JButton roomres = new JButton("");
 		//roomresGlobal = roomres;
 		roomres.setVisible(false);
+		JButton roomStart = new JButton("");
+		roomStart.setVisible(false);
 		
 		// 버튼 바운드 설정 
 		room.setBounds(xpos, ypos, 200, 100);						
 		roomres.setBounds(xpos, ypos, 200, 100);
+		roomStart.setBounds(xpos, ypos, 200, 100);
 		ma.panel.add(room);											
 		ma.panel.add(roomres);
+		ma.panel.add(roomStart);
 		ma.frame.add(ma.panels[flag]);
 		
 		
@@ -198,6 +202,7 @@ public class Make_Room {
 				
 				room.setVisible(false);				// room 투명화
 				roomres.setVisible(true);				// roomres 가시화
+				roomStart.setVisible(false);
 				newRoom.setName(name1.getText());
 				newRoom.setPhone(phone1.getText());
 				Date timeupdate = new Date();
@@ -212,7 +217,7 @@ public class Make_Room {
 				
 				// 줄바꿈을 이용하기 위해 HTML 사용
 				roomres.setText(String.format("<HTML>예약 시간 : %s <br>이름 : %s<br>전화번호 : %s</HTML>",newRoom.getTime(), newRoom.getName(), newRoom.getPhone()));
-				ma.panels[flag].setVisible(false);			// bottom_panel 투명화, 예약 관리 가시화(추가 예정)
+				ma.panels[flag].setVisible(false);			// bottom_panel 투명화
 				ma.foodPanels[flag].setVisible(false);		// foodPanels invisible
 				
 			}
@@ -254,7 +259,8 @@ public class Make_Room {
 				}
 				
 				room.setVisible(false);				// room 투명화
-				roomres.setVisible(true);			
+				roomres.setVisible(false);
+				roomStart.setVisible(true);
 				newRoom.setName(name1.getText());
 				newRoom.setPhone(phone1.getText());
 				Date timeupdate = new Date();
@@ -268,14 +274,15 @@ public class Make_Room {
 				newRoom.setTime(time1);
 				
 				// 줄바꿈을 이용하기 위해 HTML 사용
-				roomres.setText(String.format("<HTML>예약 시간 : %s <br>이름 : %s<br>전화번호 : %s</HTML>",newRoom.getTime(), newRoom.getName(), newRoom.getPhone()));
+				roomStart.setText(String.format("<HTML>예약 시간 : %s <br>이름 : %s<br>전화번호 : %s</HTML>",newRoom.getTime(), newRoom.getName(), newRoom.getPhone()));
 				
 				ma.panels[flag].setVisible(false);
 				ma.res[flag].setVisible(false);
-				ma.foodPanels[flag].setVisible(true);
+				ma.foodPanels[flag].setVisible(false);
 			}
 		});
 		
+		// 예약에서 시작으로 넘어가기 전 화면
 		res_to_start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				for (int i = 0; i < ma.foodPanels.length; i++)
@@ -289,7 +296,8 @@ public class Make_Room {
 				}
 				
 				room.setVisible(false);				// room 투명화
-				roomres.setVisible(true);			
+				roomres.setVisible(false);
+				roomStart.setVisible(true);
 				newRoom.setName(name1.getText());
 				newRoom.setPhone(phone1.getText());
 				Date timeupdate = new Date();
@@ -303,13 +311,34 @@ public class Make_Room {
 				newRoom.setTime(time1);
 				
 				// 줄바꿈을 이용하기 위해 HTML 사용
-				roomres.setText(String.format("<HTML>예약 시간 : %s <br>이름 : %s<br>전화번호 : %s</HTML>",newRoom.getTime(), newRoom.getName(), newRoom.getPhone()));
+				roomStart.setText(String.format("<HTML>예약 시간 : %s <br>이름 : %s<br>전화번호 : %s</HTML>",newRoom.getTime(), newRoom.getName(), newRoom.getPhone()));
 				
 				ma.panels[flag].setVisible(false);
 				ma.res[flag].setVisible(false);
 				ma.foodPanels[flag].setVisible(true);
 			}
 		});
+		
+		// 시작된 버튼(roomStart) 클릭 시
+		roomStart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				for (int i = 0; i < ma.panels.length; i++)
+				{
+					if (flag != i)
+					{
+						ma.panels[i].setVisible(false);
+						ma.res[i].setVisible(false);
+						ma.foodPanels[i].setVisible(false);		// foodPanels invisible
+					}
+				}
+				
+				ma.panels[flag].setVisible(false);
+				ma.res[flag].setVisible(false);
+				ma.foodPanels[flag].setVisible(true);		
+			}
+		});
+		
 		
 		// 확인 버튼 클릭 시
 		ba.confirm.addActionListener(new ActionListener() {
@@ -328,43 +357,40 @@ public class Make_Room {
 				
 				int finalPrice = (endtime - starttime) * 100;
 			
-				JFrame confirmfrm = new JFrame();
-				confirmfrm.setSize(400,300);
-				confirmfrm.setBackground(Color.white);
+				// 정산 창을 열게 해주는 코드
+				ba.finalFrame(finalPrice);
 				
-				JPanel confirmPanel = new JPanel();
-				confirmPanel.setSize(400, 300);
-				confirmPanel.setBackground(Color.white);
-				//confirmPanel.setLayout(null);
-				confirmPanel.setLayout(new BoxLayout(confirmPanel, BoxLayout.Y_AXIS));
+				room.setVisible(true);				// room 투명화
+				roomres.setVisible(false);				// roomres 가시화
+				roomStart.setVisible(false);
 				
-				JPanel announce = new JPanel();
-				//announce.setLayout(null);
-				announce.setSize(400, 200);
-				JLabel finalPriceOutput = new JLabel("계산할 비용 : " + finalPrice);
-				finalPriceOutput.setBackground(Color.white);
-				finalPriceOutput.setFont(new Font("맑은 고딕", Font.PLAIN, 30));
-				announce.add(finalPriceOutput);
+				for (int i = 0; i < ma.panels.length; i++)
+				{
+					if (flag != i)
+					{
+						ma.panels[i].setVisible(false);
+						ma.res[i].setVisible(false);
+						ma.foodPanels[i].setVisible(false);		// foodPanels invisible
+					}
+				}
 				
-				JPanel bottomAnnounce = new JPanel();
-				bottomAnnounce.setSize(400, 100);
+				ma.panels[flag].setVisible(false);
+				ma.res[flag].setVisible(false);
+				ma.foodPanels[flag].setVisible(false);
 				
-				// calFinish 버튼
-				JButton calFinish = new JButton();
-				calFinish.setBounds(300, 300, 200, 100);
-				calFinish.add(new JLabel("확인"));
-				bottomAnnounce.add(calFinish);
 				
-				confirmPanel.add(announce);
-				confirmPanel.add(bottomAnnounce);
-				//confirmPanel.add(calFinish);
-				
-				confirmfrm.add(confirmPanel);
-				confirmfrm.setVisible(true);
-				System.out.println(finalPrice);
 			}
 		});
 		
+		ba.cancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ma.foodPanels[flag].setVisible(false);
+				room.setVisible(true);				// room 투명화
+				roomres.setVisible(false);				// roomres 가시화
+				roomStart.setVisible(false);
+				
+			}
+		});
 	}
 
 }
