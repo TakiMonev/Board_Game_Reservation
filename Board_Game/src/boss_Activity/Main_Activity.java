@@ -81,10 +81,31 @@ public class Main_Activity extends JFrame {
 		initialize(num1);
 		initialize(num2);
 			
-		mr.setButton(this, num1, 100, 74, 0);
-		mr.setButton(this, num2, 480, 74, 1);
-		mr.setButton(this, num3, 100, 255, 2);
-		mr.setButton(this, num4, 480, 255, 3);
+		// 방 이미지 생성
+		ImageIcon icon1 = new ImageIcon("src/images/rooms/room1.jpg");
+		Image img1 = icon1.getImage();
+		Image changeImg1 = img1.getScaledInstance(200, 100, Image.SCALE_SMOOTH);
+		ImageIcon changeIcon1 = new ImageIcon(changeImg1);
+		
+		ImageIcon icon2 = new ImageIcon("src/images/rooms/room2.jpg");
+		Image img2 = icon2.getImage();
+		Image changeImg2 = img2.getScaledInstance(200, 100, Image.SCALE_SMOOTH);
+		ImageIcon changeIcon2 = new ImageIcon(changeImg2);
+		
+		ImageIcon icon3 = new ImageIcon("src/images/rooms/room3.jpg");
+		Image img3 = icon3.getImage();
+		Image changeImg3 = img3.getScaledInstance(200, 100, Image.SCALE_SMOOTH);
+		ImageIcon changeIcon3 = new ImageIcon(changeImg3);
+		
+		ImageIcon icon4 = new ImageIcon("src/images/rooms/room4.jpg");
+		Image img4 = icon4.getImage();
+		Image changeImg4 = img4.getScaledInstance(200, 100, Image.SCALE_SMOOTH);
+		ImageIcon changeIcon4 = new ImageIcon(changeImg4);
+		
+		mr.setButton(changeIcon1, this, num1, 100, 74, 0);
+		mr.setButton(changeIcon2, this, num2, 480, 74, 1);
+		mr.setButton(changeIcon3, this, num3, 100, 255, 2);
+		mr.setButton(changeIcon4, this, num4, 480, 255, 3);
 	}
 
 	public void initialize(Rooms num1) {
